@@ -11,12 +11,11 @@ public class ClientHandler implements Runnable {
     private BufferedReader in;
     private PrintWriter out;
     private ServerApp server;
+    private String name;
 
     public void setName(String name) {
         this.name = name;
     }
-
-    private String name;
 
     public String getName() {
         return name;
@@ -36,18 +35,27 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         try {
+            // Read the client's name
             name = in.readLine();
+
             while (true) {
+                // Read messages from the client
                 String message = in.readLine();
                 System.out.println(name + ": " + message);
+
+                // Check if the client wants to exit
                 if (message.equalsIgnoreCase("exit")) {
+                    // Notify the server that the client has disconnected
                     server.clientDisconnected(this);
                     break;
                 }
+
+                // Broadcast the message to all connected clients
                 server.broadcast(message, this);
             }
         } catch (IOException e) {
             try {
+                // Close the client socket
                 client.close();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);

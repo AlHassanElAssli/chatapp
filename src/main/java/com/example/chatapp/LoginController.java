@@ -9,15 +9,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import java.io.IOException;
+import java.util.Objects;
 
 public class LoginController {
     @FXML
@@ -31,6 +30,8 @@ public class LoginController {
     @FXML
     private Label errorLabel;
 
+    private String username;
+
     public String getUsername() {
         return username;
     }
@@ -39,7 +40,6 @@ public class LoginController {
         this.username = username;
     }
 
-    private String username;
     @FXML
     private void initialize() {
         // Initialization code for the controller
@@ -56,19 +56,19 @@ public class LoginController {
             displayError("Please enter both username and password.");
             return;
         }
+
         // Perform authentication or login logic here
         if (authenticateUser(username, password)) {
             // Successful login
             clearInputFields();
             errorLabel.setVisible(false);
             redirectToChatView();
-
-
         } else {
             // Failed login
             displayError("Invalid username or password.");
         }
     }
+
     private void redirectToChatView() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
@@ -77,7 +77,7 @@ public class LoginController {
             chatController.setUsername(this.username);
             chatController.runClient();
             Stage stage = new Stage();
-            stage.getIcons().add(new Image("C:\\Users\\hassa\\IdeaProjects\\ChatApp\\src\\main\\resources\\com\\example\\chatapp\\loginIcon.png"));
+            stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("chatIcon.png")).toExternalForm()));
             stage.setTitle("Chat");
             stage.setScene(new Scene(chatView));
             stage.show();
@@ -85,7 +85,6 @@ public class LoginController {
             // Close the login view if needed
             Stage loginStage = (Stage) registerLink.getScene().getWindow();
             loginStage.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -114,7 +113,6 @@ public class LoginController {
         return false; // Return false if there is an error or no matching user found
     }
 
-
     private void clearInputFields() {
         usernameInput.clear();
         passwordInput.clear();
@@ -136,7 +134,8 @@ public class LoginController {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("signup.fxml"));
             Parent signupView = fxmlLoader.load();
             Stage stage = new Stage();
-            stage.getIcons().add(new Image("C:\\Users\\hassa\\IdeaProjects\\ChatApp\\src\\main\\resources\\com\\example\\chatapp\\loginIcon.png"));
+            stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("loginIcon.png")).toExternalForm()));
+
             stage.setTitle("Sign Up");
             stage.setScene(new Scene(signupView));
             stage.show();

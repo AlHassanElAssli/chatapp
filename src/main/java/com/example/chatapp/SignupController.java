@@ -1,4 +1,5 @@
 package com.example.chatapp;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -16,6 +17,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class SignupController {
     @FXML
@@ -110,21 +112,18 @@ public class SignupController {
             displayError("Error creating user");
         }
     }
-
-
-
-
+    // Method to clear the input fields
     private void clearInputFields() {
         usernameInput.clear();
         passwordInput.clear();
         confirmPasswordInput.clear();
     }
 
+    // Method to display an error message
     private void displayError(String errorMessage) {
         errorLabel.setText(errorMessage);
         errorLabel.setVisible(true);
     }
-
 
     @FXML
     private void handleLoginLink() {
@@ -137,7 +136,7 @@ public class SignupController {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
             Parent loginView = fxmlLoader.load();
             Stage stage = new Stage();
-            stage.getIcons().add(new Image("C:\\Users\\hassa\\IdeaProjects\\ChatApp\\src\\main\\resources\\com\\example\\chatapp\\loginIcon.png"));
+            stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("loginIcon.png")).toExternalForm()));
             stage.setTitle("Login");
             stage.setScene(new Scene(loginView));
             stage.show();
